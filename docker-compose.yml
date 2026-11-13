@@ -1,0 +1,74 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      DJANGO_DEBUG: "0"
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Set DJANGO_SECRET_KEY in .env}
+      DJANGO_ALLOWED_HOSTS: sayedahammed.com,www.sayedahammed.com,web
+      DJANGO_CSRF_TRUSTED_ORIGINS: https://sayedahammed.com,https://www.sayedahammed.com
+      DJANGO_DATABASE_PATH: /data/db.sqlite3
+      DJANGO_STATIC_ROOT: /app/staticfiles
+    volumes:
+      - portfolio_db:/data
+      - portfolio_static:/app/staticfiles
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; req=urllib.request.Request('http://127.0.0.1:8000/', headers={'Host':'sayedahammed.com','X-Forwarded-Proto':'https'}); urllib.request.urlopen(req).read(1)"
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 45s
+
+  nginx:
+    build:
+      context: ./deploy/nginx
+    restart: unless-stopped
+    depends_on:
+      web:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - portfolio_static:/app/staticfiles:ro
+      - portfolio_letsencrypt:/etc/letsencrypt:ro
+      - portfolio_challenges:/var/www/certbot:ro
+
+  certbot:
+    image: certbot/certbot@sha256:3be63cf59c4db843369369424fcbd66653fd612eaaa951948fdeb44b2988ac39
+    restart: unless-stopped
+    depends_on:
+      - nginx
+    environment:
+      CERTBOT_EMAIL: ${CERTBOT_EMAIL:?Set CERTBOT_EMAIL in .env}
+    entrypoint:
+      - /bin/sh
+      - -c
+    command:
+      - |
+        set -eu
+        cert_dir=/etc/letsencrypt/live/sayedahammed.com
+        if [ ! -s "$$cert_dir/fullchain.pem" ] || [ ! -s "$$cert_dir/privkey.pem" ]; then
+          certbot certonly --webroot -w /var/www/certbot \
+            --email "$$CERTBOT_EMAIL" --agree-tos --no-eff-email --non-interactive \
+            -d sayedahammed.com -d www.sayedahammed.com
+        fi
+        while :; do
+          certbot renew --webroot -w /var/www/certbot --quiet
+          sleep 12h & wait "$$!"
+        done
+    volumes:
+      - portfolio_letsencrypt:/etc/letsencrypt
+      - portfolio_challenges:/var/www/certbot
+
+volumes:
+  portfolio_db:
+  portfolio_static:
+  portfolio_letsencrypt:
+  portfolio_challenges:
