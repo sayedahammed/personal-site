@@ -2,7 +2,7 @@
 
 {% block content %}
 <header class="site-header">
-  <a class="wordmark" href="#home" aria-label="Sayed Ahammed, home">SA<span>.</span></a>
+  <a class="wordmark" href="#home" aria-label="MD. Sayed Ahammed, home">MD. SAYED AHAMMED</a>
   <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">
     <span></span><span></span>
   </button>
@@ -11,21 +11,21 @@
     <a href="#work">Work</a>
     <a href="#expertise">Expertise</a>
     <a href="#contact">Contact</a>
-    <a class="nav-cta" href="{% url 'download_resume' %}">Download CV <span aria-hidden="true">↗</span></a>
+    <a class="nav-cta" href="{% url 'download_resume' %}">Download Resume <span aria-hidden="true">↗</span></a>
   </nav>
 </header>
 
 <main>
   <section class="hero section-shell" id="home">
     <div class="hero-copy">
-      <p class="eyebrow"><span class="status-dot"></span> Senior Software Engineer <span class="eyebrow-divider">/</span> Dhaka, Bangladesh</p>
+      <p class="eyebrow"><span class="status-dot"></span> <span class="hero-designation">Senior Software Engineer</span> <span class="eyebrow-divider">/</span> Dhaka, Bangladesh</p>
       <h1>Making complex<br>systems <span class="serif-accent">work</span><span class="period">.</span></h1>
       <div class="hero-bottom">
         <p class="hero-intro">I build dependable digital products—from enterprise platforms and telecom experiences to the integrations that keep them moving.</p>
         <div class="hero-actions">
           <a class="button button-dark" href="#work">Explore my work <span aria-hidden="true">↓</span></a>
           <a class="text-link hero-connect-desktop" href="#contact">Let’s connect <span aria-hidden="true">↗</span></a>
-          <a class="text-link hero-connect-mobile" href="{% url 'download_resume' %}">Download CV <span aria-hidden="true">↓</span></a>
+          <a class="text-link hero-connect-mobile" href="{% url 'download_resume' %}">Download Resume <span aria-hidden="true">↓</span></a>
         </div>
       </div>
     </div>
@@ -82,7 +82,7 @@
   </section>
 
   <section class="intro-section section-shell" id="about">
-    <div class="section-kicker"><span>01</span> / A LITTLE ABOUT ME</div>
+    <div class="section-kicker">A LITTLE ABOUT ME</div>
     <div class="intro-content">
       <h2>Engineer by craft.<br><span class="muted">Problem-solver by nature.</span></h2>
       <div class="intro-columns">
@@ -90,9 +90,9 @@
         <p>From early-stage product ideas to platforms serving more than 100,000 monthly users, I care about building systems that are useful, resilient, and thoughtfully designed around the people who rely on them.</p>
       </div>
       <div class="principles">
-        <article><span class="principle-no">01</span><h3>Understand first</h3><p>Good engineering starts with listening closely to the people and problems behind a brief.</p></article>
-        <article><span class="principle-no">02</span><h3>Build for reality</h3><p>Design for scale, reliability, and the realities of production—not just the happy path.</p></article>
-        <article><span class="principle-no">03</span><h3>Make it matter</h3><p>Connect technical decisions to outcomes people and businesses can actually feel.</p></article>
+        <article><h3>Understand first</h3><p>Good engineering starts with listening closely to the people and problems behind a brief.</p></article>
+        <article><h3>Build for reality</h3><p>Design for scale, reliability, and the realities of production—not just the happy path.</p></article>
+        <article><h3>Make it matter</h3><p>Connect technical decisions to outcomes people and businesses can actually feel.</p></article>
       </div>
       <div class="mission-vision">
         <article><span class="principle-no">MISSION</span><p>Turn complex business and user needs into reliable software that makes everyday services more accessible and effective.</p></article>
@@ -104,7 +104,7 @@
   <section class="experience-section" id="work">
     <div class="section-shell">
       <div class="section-heading">
-        <div class="section-kicker"><span>02</span> / CAREER JOURNEY</div>
+        <div class="section-kicker">CAREER JOURNEY</div>
         <h2>Experience, <span class="serif-accent">in practice.</span></h2>
         <p class="section-description">A path through software, telecom, and digital product work—always close to the problem being solved.</p>
       </div>
@@ -131,33 +131,33 @@
 
   <section class="projects-section section-shell">
     <div class="section-heading">
-      <div class="section-kicker"><span>03</span> / SELECTED WORK</div>
+      <div class="section-kicker">SELECTED WORK</div>
       <h2>Systems built<br>to <span class="serif-accent">move work forward.</span></h2>
     </div>
     <div class="project-grid">
       <article class="project-card project-feature">
-        <span class="project-index">01 / ENTERPRISE CRM</span>
+        <span class="project-index">ENTERPRISE CRM</span>
         <div class="project-symbol symbol-nodes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
         <h3>Telecom subscriber lifecycle platform</h3>
         <p>Enterprise CRM supporting corporate subscriber onboarding and lifecycle management, with mobile financial services integrations for wallet-based top-ups.</p>
         <div class="tag-list"><span>Java / Spring Boot</span><span>MFS</span><span>Telecom</span></div>
       </article>
       <article class="project-card">
-        <span class="project-index">02 / CONVERSATIONAL AI</span>
+        <span class="project-index">CONVERSATIONAL AI</span>
         <div class="project-symbol symbol-chat" aria-hidden="true"><span>?</span></div>
         <h3>AI-powered HR chatbot</h3>
         <p>Internal conversational solution designed to automate employee communication and improve query resolution.</p>
         <div class="tag-list"><span>Dialogflow</span><span>Node.js</span></div>
       </article>
       <article class="project-card">
-        <span class="project-index">03 / AUTOMATION</span>
+        <span class="project-index">AUTOMATION</span>
         <div class="project-symbol symbol-pulse" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
         <h3>SOC resource alerting system</h3>
         <p>Automated resource monitoring and SMS alerting, combining infrastructure automation with a web-based operations interface.</p>
         <div class="tag-list"><span>Python / Ansible</span><span>Laravel</span><span>SMSC</span></div>
       </article>
       <article class="project-card project-feature">
-        <span class="project-index">04 / HIGH-TRAFFIC PRODUCT</span>
+        <span class="project-index">HIGH-TRAFFIC PRODUCT</span>
         <div class="project-symbol symbol-rings" aria-hidden="true"><i></i><i></i><i></i></div>
         <h3>Telecom chatbot for 100k+ users</h3>
         <p>High-traffic chatbot platform with data purchase and automated campaigns, serving more than 100,000 monthly active users.</p>
@@ -168,20 +168,20 @@
 
   <section class="expertise-section section-shell" id="expertise">
     <div class="section-heading">
-      <div class="section-kicker"><span>04</span> / WHAT I BRING</div>
+      <div class="section-kicker">WHAT I BRING</div>
       <h2>Tools are only useful<br>when they <span class="serif-accent">solve something.</span></h2>
     </div>
     <div class="expertise-grid">
-      <article class="expertise-card"><span class="card-number">01</span><h3>Backend &amp; platforms</h3><p>Building APIs and enterprise services with performance, maintainability, and scale in mind.</p><div class="skill-list">Java · Spring Boot · Node.js · PHP · Laravel · Python</div></article>
-      <article class="expertise-card"><span class="card-number">02</span><h3>Data &amp; architecture</h3><p>Designing robust data layers and service boundaries for high-throughput applications.</p><div class="skill-list">PostgreSQL · MySQL · Oracle · Redis · Microservices</div></article>
-      <article class="expertise-card"><span class="card-number">03</span><h3>Connected experiences</h3><p>Connecting people and services through messaging, payments, chat, and automation.</p><div class="skill-list">MFS APIs · SMSC · Dialogflow · Wit.ai · Ansible</div></article>
-      <article class="expertise-card"><span class="card-number">04</span><h3>Product collaboration</h3><p>Bridging business goals and engineering through discovery, prototyping, and delivery.</p><div class="skill-list">System design · SDLC · Scrum · Consultation · Git</div></article>
+      <article class="expertise-card"><h3>Backend &amp; platforms</h3><p>Building APIs and enterprise services with performance, maintainability, and scale in mind.</p><div class="skill-list">Java · Spring Boot · Node.js · PHP · Laravel · Python</div></article>
+      <article class="expertise-card"><h3>Data &amp; architecture</h3><p>Designing robust data layers and service boundaries for high-throughput applications.</p><div class="skill-list">PostgreSQL · MySQL · Oracle · Redis · Microservices</div></article>
+      <article class="expertise-card"><h3>Connected experiences</h3><p>Connecting people and services through messaging, payments, chat, and automation.</p><div class="skill-list">MFS APIs · SMSC · Dialogflow · Wit.ai · Ansible</div></article>
+      <article class="expertise-card"><h3>Product collaboration</h3><p>Bridging business goals and engineering through discovery, prototyping, and delivery.</p><div class="skill-list">System design · SDLC · Scrum · Consultation · Git</div></article>
     </div>
   </section>
 
   <section class="impact-section">
     <div class="section-shell impact-inner">
-      <div class="section-kicker"><span>05</span> / SELECTED IMPACT</div>
+      <div class="section-kicker"> SELECTED IMPACT</div>
       <div class="impact-grid">
         <div class="impact-stat"><strong>100<span>k+</span></strong><p>monthly active users supported by a telecom chatbot platform</p></div>
         <div class="impact-copy"><p class="impact-quote">“Technology earns its place when it makes something meaningfully better.”</p><p class="impact-note">A practical approach shaped by work across enterprise software, telecom, and digital products.</p></div>
@@ -190,14 +190,14 @@
   </section>
 
   <section class="education-section section-shell">
-    <div class="section-kicker"><span>06</span> / FOUNDATIONS</div>
+    <div class="section-kicker">FOUNDATIONS</div>
     <div class="education-content"><div><h2>Always learning.<br><span class="muted">Grounded in fundamentals.</span></h2></div><div class="education-card"><span class="education-year">2017</span><div><h3>B.Sc. in Computer Science &amp; Engineering</h3><p>Daffodil International University</p></div><span class="education-mark">CSE</span></div></div>
   </section>
 
   <section class="contact-section" id="contact">
     <div class="section-shell contact-inner">
       <div class="contact-copy">
-        <div class="section-kicker"><span>07</span> / START A CONVERSATION</div>
+        <div class="section-kicker">START A CONVERSATION</div>
         <h2>Have a good<br>problem to <span class="serif-accent">solve?</span></h2>
         <p>I’m open to conversations about thoughtful products, challenging engineering, and ways to make technology work better.</p>
         <a class="contact-email" href="mailto:sayed@sayedahammed.com">sayed@sayedahammed.com <span aria-hidden="true">↗</span></a>
@@ -220,7 +220,7 @@
         </form>
       </div>
     </div>
-    <footer class="site-footer section-shell"><a class="wordmark footer-mark" href="#home">SA<span>.</span></a><span>© {% now "Y" %} Md. Sayed Ahammed</span><a href="{% url 'download_resume' %}">Download CV ↓</a></footer>
+    <footer class="site-footer section-shell"><a class="wordmark footer-mark" href="#home">MD. SAYED AHAMMED</a><span>© {% now "Y" %} Md. Sayed Ahammed</span><a href="{% url 'download_resume' %}">Download Resume ↓</a></footer>
   </section>
 </main>
 {% endblock %}
