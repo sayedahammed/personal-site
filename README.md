@@ -31,33 +31,6 @@ This portfolio site is built as a lightweight Django application with a static f
 - `static/` — CSS and JavaScript assets
 - `docker-compose.yml` — production stack definition
 
-## Run Locally
-
-```bash
-python -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/python manage.py migrate
-.venv/bin/python manage.py runserver
-```
-
-## Production Deployment
-
-The app is deployed with Docker Compose using:
-
-- Django web container
-- Nginx reverse proxy
-- Certbot for TLS certificates
-
-On first startup, Certbot requests a certificate after Nginx is serving the HTTP challenge. Nginx enables HTTPS when the certificate is available, and Certbot renews it automatically. Set `DJANGO_SECRET_KEY` and `CERTBOT_EMAIL` in `.env`, point both domain records to the server, and allow inbound ports 80 and 443.
-
-Check the public HTTPS endpoint with:
-
-```bash
-curl -I https://sayedahammed.com/
-```
-
-If curl reports error 7, the TCP connection to port 443 was refused or unreachable; verify the DNS A/AAAA records, server firewall, provider firewall, and that the Compose `nginx` service is running with port 443 published.
-
 ## Summary
 
 The site combines a Python-based backend with a modern front-end presentation, making it a simple yet robust personal portfolio stack for deployment and maintenance.
