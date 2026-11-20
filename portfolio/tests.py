@@ -13,7 +13,7 @@ class PortfolioViewsTests(TestCase):
         response = self.client.get(reverse("home"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Making complex")
+        self.assertContains(response, "Making resilient")
         self.assertContains(response, "100k+")
         self.assertContains(response, "MISSION")
 
