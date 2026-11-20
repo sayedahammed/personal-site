@@ -20,7 +20,8 @@ class PortfolioViewsTests(TestCase):
     def test_homepage_includes_smalltalk_launcher(self):
         response = self.client.get(reverse("home"))
 
-        self.assertContains(response, "SmallTalk")
+        self.assertContains(response, "Qwen3 Chat")
+        self.assertContains(response, "Qwen3:0.6b")
         self.assertContains(response, reverse("smalltalk_chat"))
 
     def test_valid_contact_message_is_saved(self):
@@ -126,7 +127,7 @@ class PortfolioViewsTests(TestCase):
         self.assertEqual(response.status_code, 503)
         self.assertEqual(
             response.json(),
-            {"error": "SmallTalk is temporarily unavailable. Please try again later."},
+            {"error": "Qwen3 Chat is temporarily unavailable. Please try again later."},
         )
 
     @patch("portfolio.views.ollama.Client")
@@ -142,7 +143,7 @@ class PortfolioViewsTests(TestCase):
         self.assertEqual(response.status_code, 502)
         self.assertEqual(
             response.json(),
-            {"error": "SmallTalk couldn't generate a reply. Please try again."},
+            {"error": "Qwen3 Chat couldn't generate a reply. Please try again."},
         )
 
     @patch("portfolio.views.ollama.Client")
@@ -158,5 +159,5 @@ class PortfolioViewsTests(TestCase):
         self.assertEqual(response.status_code, 503)
         self.assertEqual(
             response.json(),
-            {"error": "SmallTalk is temporarily unavailable. Please try again later."},
+            {"error": "Qwen3 Chat is temporarily unavailable. Please try again later."},
         )

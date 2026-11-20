@@ -68,19 +68,19 @@ def smalltalk_chat(request):
     except ollama.ResponseError:
         logger.exception("Ollama returned an error while handling a SmallTalk request.")
         return JsonResponse(
-            {"error": "SmallTalk couldn't generate a reply. Please try again."},
+            {"error": "Qwen3 Chat couldn't generate a reply. Please try again."},
             status=502,
         )
     except httpx.HTTPError:
         logger.exception("Ollama is unavailable while handling a SmallTalk request.")
         return JsonResponse(
-            {"error": "SmallTalk is temporarily unavailable. Please try again later."},
+            {"error": "Qwen3 Chat is temporarily unavailable. Please try again later."},
             status=503,
         )
     except Exception:
         logger.exception("Unexpected Ollama client failure while handling a SmallTalk request.")
         return JsonResponse(
-            {"error": "SmallTalk is temporarily unavailable. Please try again later."},
+            {"error": "Qwen3 Chat is temporarily unavailable. Please try again later."},
             status=503,
         )
 
@@ -89,7 +89,7 @@ def smalltalk_chat(request):
     if not isinstance(reply, str) or not reply.strip():
         logger.error("Ollama returned an invalid SmallTalk response.")
         return JsonResponse(
-            {"error": "SmallTalk couldn't generate a reply. Please try again."},
+            {"error": "Qwen3 Chat couldn't generate a reply. Please try again."},
             status=502,
         )
 
