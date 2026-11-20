@@ -83,6 +83,8 @@ class PortfolioViewsTests(TestCase):
         sent_messages = client.chat.call_args.kwargs["messages"]
         self.assertEqual(sent_messages[0]["role"], "system")
         self.assertIn("Respond briefly and warmly to simple social small talk", sent_messages[0]["content"])
+        self.assertIn("medium-length answer of 4-6 sentences", sent_messages[0]["content"])
+        self.assertIn("Cover every part of", sent_messages[0]["content"])
         self.assertIn("Never use outside knowledge", sent_messages[0]["content"])
         self.assertIn(json.dumps(profile), sent_messages[0]["content"])
         self.assertEqual(sent_messages[1:], messages)
@@ -92,7 +94,7 @@ class PortfolioViewsTests(TestCase):
             think=False,
             stream=False,
             keep_alive=-1,
-            options={"temperature": 0.2, "num_predict": 128, "num_ctx": 4096},
+            options={"temperature": 0.1, "num_predict": 320, "num_ctx": 4096},
         )
 
     @patch("portfolio.views.ollama.Client")
@@ -121,7 +123,7 @@ class PortfolioViewsTests(TestCase):
     @patch("portfolio.views.ollama.Client")
     def test_smalltalk_chat_rejects_oversized_context(self, client_factory):
         oversized_contexts = [
-            [{"role": "user", "content": "Hi"}] * 9,
+            [{"role": "user", "content": "Hi"}] * 7,
             [{"role": "user", "content": "x" * 1001}],
         ]
 

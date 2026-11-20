@@ -63,7 +63,7 @@ if (smalltalk) {
     const content = input.value.trim();
     if (!content || sendButton.disabled) return;
 
-    if (messages.length >= 8) messages.splice(0, 2);
+    if (messages.length >= 6) messages.splice(0, 2);
     messages.push({ role: "user", content });
     appendMessage("user", content);
     input.value = "";
