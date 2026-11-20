@@ -26,11 +26,12 @@ This portfolio site is built as a lightweight Django application with a static f
 
 ## Personal assistant
 
-The personal assistant uses the Ollama Python client and the `qwen3:1.7b`
+The personal assistant uses the Ollama Python client and the `qwen3.5:0.8b`
 model. It reads `data/profile.json` on the server and uses it as the source for
 answers about professional background, experience, skills, projects, and
-education. The profile is not served to the browser. Make sure the profile file
-is present in the deployment image or securely mounted into the web container.
+education. Brief greetings and polite small talk are allowed; factual answers
+stay grounded in the profile. The profile is not served to the browser. Make sure
+the profile file is present in the deployment image or securely mounted into the web container.
 The web application sends chat history to Ollama on the server; the browser
 does not connect to Ollama directly. `OLLAMA_HOST` and `OLLAMA_MODEL` can be
 set through environment variables. Docker Compose defaults the host to
