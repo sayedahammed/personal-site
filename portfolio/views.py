@@ -78,7 +78,16 @@ def smalltalk_chat(request):
             status=503,
         )
 
-    return JsonResponse({"reply": response["message"]["content"]})
+    message = response.get("message") if isinstance(response, dict) else getattr(response, "message", None)
+    reply = message.get("content") if isinstance(message, dict) else getattr(message, "content", None)
+    if not isinstance(reply, str) or not reply.strip():
+        logger.error("Ollama returned an invalid SmallTalk response.")
+        return JsonResponse(
+            {"error": "SmallTalk couldn't generate a reply. Please try again."},
+            status=502,
+        )
+
+    return JsonResponse({"reply": reply.strip()})
 
 
 def contact(request):
