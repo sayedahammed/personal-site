@@ -26,7 +26,7 @@ This portfolio site is built as a lightweight Django application with a static f
 
 ## Personal assistant
 
-The personal assistant uses the Ollama Python client and the `qwen3:0.6b`
+The personal assistant uses the Ollama Python client and the `qwen3:1.7b`
 model. It reads `data/profile.json` on the server and uses it as the source for
 answers about professional background, experience, skills, projects, and
 education. The profile is not served to the browser. Make sure the profile file
