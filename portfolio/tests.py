@@ -22,9 +22,15 @@ class PortfolioViewsTests(TestCase):
         response = self.client.get(reverse("home"))
 
         self.assertContains(response, "Personal Assistant")
-        self.assertContains(response, "Qwen3:0.6b")
+        self.assertContains(response, "qwen3:0.6b")
         self.assertContains(response, "professional background")
         self.assertContains(response, reverse("smalltalk_chat"))
+
+    def test_homepage_displays_configured_ollama_model(self):
+        with self.settings(OLLAMA_MODEL="llama3.2"):
+            response = self.client.get(reverse("home"))
+
+        self.assertContains(response, "Powered by llama3.2")
 
     def test_valid_contact_message_is_saved(self):
         response = self.client.post(
@@ -70,7 +76,10 @@ class PortfolioViewsTests(TestCase):
         messages = [{"role": "user", "content": "Hello"}]
         profile = {"name": "Test Profile", "skills": ["Python"]}
 
-        with patch("pathlib.Path.open", return_value=StringIO(json.dumps(profile))):
+        with (
+            self.settings(OLLAMA_MODEL="test-model"),
+            patch("pathlib.Path.open", return_value=StringIO(json.dumps(profile))),
+        ):
             response = self.client.post(
                 reverse("smalltalk_chat"),
                 data=json.dumps({"messages": messages}),
@@ -89,12 +98,19 @@ class PortfolioViewsTests(TestCase):
         self.assertIn(json.dumps(profile), sent_messages[0]["content"])
         self.assertEqual(sent_messages[1:], messages)
         client.chat.assert_called_once_with(
-            model="qwen3:0.6b",
+            model="test-model",
             messages=sent_messages,
             think=False,
             stream=False,
             keep_alive=-1,
-            options={"temperature": 0.1, "num_predict": 320, "num_ctx": 4096},
+            options={
+                "temperature": 0.3,
+                "num_predict": 256,
+                "num_ctx": 4096,
+                "seed": 42,
+                "top_p": 0.8,
+                "top_k": 20,
+            },
         )
 
     @patch("portfolio.views.ollama.Client")

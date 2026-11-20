@@ -19,7 +19,14 @@ SMALLTALK_MAX_MESSAGE_LENGTH = 1000
 
 
 def home(request):
-    return render(request, "home.html", {"contact_form": ContactForm()})
+    return render(
+        request,
+        "home.html",
+        {
+            "contact_form": ContactForm(),
+            "ollama_model": settings.OLLAMA_MODEL,
+        },
+    )
 
 
 def _personal_assistant_prompt():
@@ -105,9 +112,12 @@ def smalltalk_chat(request):
             stream=False,
             keep_alive=-1,
             options={
-                "temperature": 0.1,
-                "num_predict": 320,
+                "temperature": 0.3,
+                "num_predict": 256,
                 "num_ctx": 4096,
+                "seed": 42,
+                "top_p": 0.8,
+                "top_k": 20,
             },
         )
     except ollama.ResponseError:

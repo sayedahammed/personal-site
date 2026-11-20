@@ -22,12 +22,15 @@ This portfolio site is built as a lightweight Django application with a static f
 - Docker: containerized deployment and environment consistency
 - Nginx: reverse proxy and static asset serving
 - Certbot: automatic HTTPS certificate issuance and renewal
-- Ollama: local Qwen3 responses for the profile-based personal assistant
+- Ollama: local model responses for the profile-based personal assistant
 
 ## Personal assistant
 
-The personal assistant uses the Ollama Python client and the `qwen3:0.6b`
-model. It reads `data/profile.json` on the server and uses it as the source for
+The personal assistant uses the Ollama Python client and defaults to the
+`qwen3:0.6b` model. Set `OLLAMA_MODEL` in the environment (or in the root
+`.env` file for Docker Compose) to change the model in one place; the assistant
+uses that value for inference and displays it in the chat header. It reads
+`data/profile.json` on the server and uses it as the source for
 answers about professional background, experience, skills, projects, and
 education. Brief greetings and polite small talk are allowed; factual answers
 stay grounded in the profile. The profile is not served to the browser. Make sure
