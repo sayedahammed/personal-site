@@ -85,14 +85,14 @@ if (smalltalk) {
         body: JSON.stringify({ messages }),
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Qwen3 Chat couldn't send your message.");
+      if (!response.ok) throw new Error(result.error || "The personal assistant couldn't send your message.");
 
       messages.push({ role: "assistant", content: result.reply });
       appendMessage("assistant", result.reply);
     } catch (error) {
       appendMessage(
         "assistant",
-        error instanceof Error ? error.message : "Qwen3 Chat is temporarily unavailable.",
+        error instanceof Error ? error.message : "The personal assistant is temporarily unavailable.",
         true,
       );
     } finally {

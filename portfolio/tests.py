@@ -1,4 +1,5 @@
 import json
+from io import StringIO
 from unittest.mock import patch
 
 import httpx
@@ -20,8 +21,9 @@ class PortfolioViewsTests(TestCase):
     def test_homepage_includes_smalltalk_launcher(self):
         response = self.client.get(reverse("home"))
 
-        self.assertContains(response, "Qwen3 Chat")
+        self.assertContains(response, "Personal Assistant")
         self.assertContains(response, "Qwen3:0.6b")
+        self.assertContains(response, "professional background")
         self.assertContains(response, reverse("smalltalk_chat"))
 
     def test_valid_contact_message_is_saved(self):
@@ -66,24 +68,43 @@ class PortfolioViewsTests(TestCase):
         client = client_factory.return_value
         client.chat.return_value = {"message": {"content": "Hello back"}}
         messages = [{"role": "user", "content": "Hello"}]
+        profile = {"name": "Test Profile", "skills": ["Python"]}
 
-        response = self.client.post(
-            reverse("smalltalk_chat"),
-            data=json.dumps({"messages": messages}),
-            content_type="application/json",
-        )
+        with patch("pathlib.Path.open", return_value=StringIO(json.dumps(profile))):
+            response = self.client.post(
+                reverse("smalltalk_chat"),
+                data=json.dumps({"messages": messages}),
+                content_type="application/json",
+            )
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"reply": "Hello back"})
         client_factory.assert_called_once_with(host="http://127.0.0.1:11434")
+        sent_messages = client.chat.call_args.kwargs["messages"]
+        self.assertEqual(sent_messages[0]["role"], "system")
+        self.assertIn("Answer only questions about", sent_messages[0]["content"])
+        self.assertIn(json.dumps(profile), sent_messages[0]["content"])
+        self.assertEqual(sent_messages[1:], messages)
         client.chat.assert_called_once_with(
             model="qwen3:0.6b",
-            messages=messages,
+            messages=sent_messages,
             think=False,
             stream=False,
             keep_alive=-1,
-            options={"num_predict": 64, "num_thread": 4},
+            options={"temperature": 0.2, "num_predict": 250, "num_thread": 4},
         )
+
+    @patch("portfolio.views.ollama.Client")
+    def test_smalltalk_chat_is_unavailable_without_profile(self, client_factory):
+        with patch("pathlib.Path.open", side_effect=FileNotFoundError):
+            response = self.client.post(
+                reverse("smalltalk_chat"),
+                data=json.dumps({"messages": [{"role": "user", "content": "Hello"}]}),
+                content_type="application/json",
+            )
+
+        self.assertEqual(response.status_code, 503)
+        client_factory.assert_not_called()
 
     @patch("portfolio.views.ollama.Client")
     def test_smalltalk_chat_rejects_invalid_messages(self, client_factory):
@@ -127,7 +148,7 @@ class PortfolioViewsTests(TestCase):
         self.assertEqual(response.status_code, 503)
         self.assertEqual(
             response.json(),
-            {"error": "Qwen3 Chat is temporarily unavailable. Please try again later."},
+            {"error": "The personal assistant is temporarily unavailable. Please try again later."},
         )
 
     @patch("portfolio.views.ollama.Client")
@@ -143,7 +164,7 @@ class PortfolioViewsTests(TestCase):
         self.assertEqual(response.status_code, 502)
         self.assertEqual(
             response.json(),
-            {"error": "Qwen3 Chat couldn't generate a reply. Please try again."},
+            {"error": "The personal assistant couldn't generate a reply. Please try again."},
         )
 
     @patch("portfolio.views.ollama.Client")
@@ -159,5 +180,5 @@ class PortfolioViewsTests(TestCase):
         self.assertEqual(response.status_code, 503)
         self.assertEqual(
             response.json(),
-            {"error": "Qwen3 Chat is temporarily unavailable. Please try again later."},
+            {"error": "The personal assistant is temporarily unavailable. Please try again later."},
         )

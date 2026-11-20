@@ -22,14 +22,18 @@ This portfolio site is built as a lightweight Django application with a static f
 - Docker: containerized deployment and environment consistency
 - Nginx: reverse proxy and static asset serving
 - Certbot: automatic HTTPS certificate issuance and renewal
-- Ollama: local Qwen3 model responses for the SmallTalk portfolio chat
+- Ollama: local Qwen3 responses for the profile-based personal assistant
 
-## SmallTalk
+## Personal assistant
 
-SmallTalk uses the Ollama Python client and the `qwen3:0.6b` model. The web
-application sends chat history to Ollama on the server; it does not connect to
-Ollama directly from the browser. `OLLAMA_HOST` and `OLLAMA_MODEL` can be set
-through environment variables. Docker Compose defaults the host to
+The personal assistant uses the Ollama Python client and the `qwen3:0.6b`
+model. It reads `data/profile.json` on the server and uses it as the source for
+answers about professional background, experience, skills, projects, and
+education. The profile is not served to the browser. Make sure the profile file
+is present in the deployment image or securely mounted into the web container.
+The web application sends chat history to Ollama on the server; the browser
+does not connect to Ollama directly. `OLLAMA_HOST` and `OLLAMA_MODEL` can be
+set through environment variables. Docker Compose defaults the host to
 `host.docker.internal:11434`, so the Ollama service must be reachable from the
 web container. On Linux, configure the Ollama service to listen on an address
 reachable through Docker's host gateway and firewall access to the local
