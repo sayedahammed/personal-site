@@ -92,7 +92,7 @@ class PortfolioViewsTests(TestCase):
             think=False,
             stream=False,
             keep_alive=-1,
-            options={"temperature": 0.2, "num_predict": 250, "num_thread": 4},
+            options={"temperature": 0.2, "num_predict": 128, "num_ctx": 4096},
         )
 
     @patch("portfolio.views.ollama.Client")
@@ -121,7 +121,7 @@ class PortfolioViewsTests(TestCase):
     @patch("portfolio.views.ollama.Client")
     def test_smalltalk_chat_rejects_oversized_context(self, client_factory):
         oversized_contexts = [
-            [{"role": "user", "content": "Hi"}] * 13,
+            [{"role": "user", "content": "Hi"}] * 9,
             [{"role": "user", "content": "x" * 1001}],
         ]
 

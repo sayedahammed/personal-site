@@ -32,6 +32,8 @@ answers about professional background, experience, skills, projects, and
 education. Brief greetings and polite small talk are allowed; factual answers
 stay grounded in the profile. The profile is not served to the browser. Make sure
 the profile file is present in the deployment image or securely mounted into the web container.
+Inference is bounded to an 8-message history, a 4K-token context, and concise
+replies to reduce latency.
 The web application sends chat history to Ollama on the server; the browser
 does not connect to Ollama directly. `OLLAMA_HOST` and `OLLAMA_MODEL` can be
 set through environment variables. Docker Compose defaults the host to

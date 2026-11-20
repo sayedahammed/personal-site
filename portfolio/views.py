@@ -14,7 +14,7 @@ from .forms import ContactForm
 
 
 logger = logging.getLogger(__name__)
-SMALLTALK_MAX_MESSAGES = 12
+SMALLTALK_MAX_MESSAGES = 8
 SMALLTALK_MAX_MESSAGE_LENGTH = 1000
 
 
@@ -40,6 +40,7 @@ def _personal_assistant_prompt():
 Respond briefly and warmly to simple social small talk, such as greetings, thanks,
 and polite farewells. Keep these replies generic and do not make factual claims
 about the person that are not in the profile.
+Keep factual replies concise, usually no more than three sentences.
 For factual questions, answer only about their professional background, work
 experience, skills, projects, and education. Use only facts present in the profile.
 Never use outside knowledge to answer unrelated questions; politely redirect those
@@ -61,7 +62,10 @@ def smalltalk_chat(request):
 
     messages = payload.get("messages") if isinstance(payload, dict) else None
     if not isinstance(messages, list) or not 1 <= len(messages) <= SMALLTALK_MAX_MESSAGES:
-        return JsonResponse({"error": "Send between 1 and 12 messages."}, status=400)
+        return JsonResponse(
+            {"error": f"Send between 1 and {SMALLTALK_MAX_MESSAGES} messages."},
+            status=400,
+        )
 
     validated_messages = []
     for message in messages:
@@ -99,8 +103,8 @@ def smalltalk_chat(request):
             keep_alive=-1,
             options={
                 "temperature": 0.2,
-                "num_predict": 250,
-                "num_thread": 4,
+                "num_predict": 128,
+                "num_ctx": 4096,
             },
         )
     except ollama.ResponseError:
