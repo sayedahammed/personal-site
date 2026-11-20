@@ -1,0 +1,127 @@
+{
+  "name": "MD. SAYED AHAMMED",
+  "location": "Dhaka, Bangladesh",
+  "contact": {
+    "phone": "+8801833184018",
+    "email": "sayed@sayedahammed.com",
+    "linkedin": "https://linkedin.com",
+    "github": "https://github.com",
+    "website": "https://sayedahammed.com"
+  },
+  "professional_summary": "Result-driven Senior Software Engineer with extensive experience in architecting, developing, and scaling high-performance enterprise and full-stack systems using Java Spring Boot. Proven track record in bridging the gap between business needs and technical execution since the beginning of my career. Adept at driving business revenue and user engagement through product ideation, FinTech/MFS integrations, AI-powered conversational solutions Dialogflow, and telecom CRM systems. Experience in technical leadership and managing high-traffic platforms.",
+  "core_competencies_and_skills": {
+    "backend_and_frontend_development": [
+      "Java",
+      "Spring Boot",
+      "Node.js",
+      "React.js",
+      "FastMCP"
+    ],
+    "database_management": [
+      "MySQL",
+      "PostgreSQL",
+      "Oracle DB",
+      "SQL",
+      "Query Optimization",
+      "Redis"
+    ],
+    "fintech_and_telecom": [
+      "Integration of MFS gateways",
+      "SMSC Gateways",
+      "CBS Integration"
+    ],
+    "conversational_ai_and_nlp": [
+      "Google Dialogflow",
+      "Chatbot Architecture",
+      "Dynamic Response Engines",
+      "Wit.ai"
+    ],
+    "architecture_and_strategy": [
+      "Enterprise Software Architecture",
+      "Microservices",
+      "System Design",
+      "CRM Platforms",
+      "Requirements Gathering & Analysis",
+      "Product Ideation"
+    ],
+    "methodologies": [
+      "Full SDLC",
+      "Scrum",
+      "Rapid Prototyping",
+      "Client-Facing Consultation"
+    ],
+    "tools_and_automation": [
+      "Git",
+      "Ansible",
+      "Google Dialogflow",
+      "SMSC Gateway",
+      "MFS APIs",
+      "RESTful APIs"
+    ]
+  },
+  "professional_experience": [
+    {
+      "company": "Robi Axiata PLC.",
+      "location": "Dhaka, Bangladesh",
+      "role": "Senior Software Engineer",
+      "start_date": "June 2026",
+      "end_date": "Present",
+      "responsibilities": [
+        "Architect and deliver scalable enterprise backend solutions using Java Spring Boot successfully translating complex business requirements into high-performance software.",
+        "Design and optimize robust relational database schemas using PostgreSQL, MySQL, and Oracle to ensure data integrity and high-throughput query performance.",
+        "Lead system design and implementation of web applications using Java Spring Boot, ensuring absolute alignment between technical execution and core business goals.",
+        "Utilize Git for efficient version control, branching strategies, and smooth team collaboration across distributed engineering teams.",
+        "Mentor junior developers and conduct code reviews to ensure adherence to best practices, security standards, and clean code patterns."
+      ]
+    },
+    {
+      "company": "RedDot Digital Ltd.",
+      "location": "Dhaka, Bangladesh",
+      "role": "Senior Software Engineer",
+      "start_date": "March 2020",
+      "end_date": "May 2026",
+      "responsibilities": [
+        "Architected and engineered an enterprise-grade CRM platform using Java, Spring Boot to streamline telecom corporate subscriber onboarding and end-to-end lifecycle management.",
+        "Integrated secure FinTech & Mobile Financial Services (MFS) gateways to enable seamless wallet-based top-up solutions, processing critical financial transactions smoothly.",
+        "Developed an AI-powered HR Chatbot using Google Dialogflow and Node.js, automating internal communication and significantly improving employee query resolution time.",
+        "Designed and deployed a SOC Server Resource Usages Alerting System by leveraging Ansible and Python for backend automation, coupled with a Laravel, PostgreSQL, and SMSC-integrated monitoring UI.",
+        "Optimized complex database structures in PostgreSQL and synchronized SMSC gateways to ensure real-time automated SMS alerting and high platform availability."
+      ]
+    },
+    {
+      "company": "Genex Digital",
+      "location": "Dhaka, Bangladesh",
+      "role": "Developer, Software Development",
+      "start_date": "July 2019",
+      "end_date": "March 2020",
+      "responsibilities": [
+        "Spearheaded the architecture and development of an advanced, dynamic chatbot solution utilizing PHP (Laravel) for robust backend APIs and React.js for an intuitive user interface.",
+        "Led a dynamic engineering team through the design and deployment phases, establishing agile workflows and version control best practices using Git.",
+        "Engineered a dynamic response engine that adapted user interactions in real-time, significantly increasing the chatbot’s conversational accuracy, flexibility, and user retention.",
+        "Designed and developed reusable UI components in React to build an interactive management dashboard, streamlining content updates for non-technical stakeholders.",
+        "Optimized database performance using MySQL to handle concurrent requests and maintain low-latency response times for the active chatbot user base."
+      ]
+    },
+    {
+      "company": "Preneur Lab Ltd.",
+      "location": "Dhaka, Bangladesh",
+      "role": "Back-end Developer",
+      "start_date": "Jan 2018",
+      "end_date": "July 2019",
+      "responsibilities": [
+        "Engineered a high-traffic telecom chatbot using PHP and MySQL, successfully managing and scaling the platform to support over 100,000+ Monthly Active Users (MAU).",
+        "Conducted direct client-facing consultations from the early stages of my career to capture complex business needs, transforming vague telecom product ideas into functional, actionable technical specifications.",
+        "Designed and integrated a seamless data purchase solution within the chatbot, launching targeted automated campaigns that directly drove digital monetization and user engagement.",
+        "Crafted interactive conversational flows and user-centric content design, significantly optimizing user experience and customer satisfaction.",
+        "Maintained clean code repositories and managed feature releases using Git version control."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science & Engineering (CSE)",
+      "institution": "Daffodil International University",
+      "graduation_year": 2017
+    }
+  ]
+}
