@@ -22,6 +22,22 @@ This portfolio site is built as a lightweight Django application with a static f
 - Docker: containerized deployment and environment consistency
 - Nginx: reverse proxy and static asset serving
 - Certbot: automatic HTTPS certificate issuance and renewal
+- Ollama: local Qwen3 model responses for the SmallTalk portfolio chat
+
+## SmallTalk
+
+SmallTalk uses the Ollama Python client and the `qwen3:0.6b` model. The web
+application sends chat history to Ollama on the server; it does not connect to
+Ollama directly from the browser. `OLLAMA_HOST` and `OLLAMA_MODEL` can be set
+through environment variables. Docker Compose defaults the host to
+`host.docker.internal:11434`, so the Ollama service must be reachable from the
+web container. On Linux, configure the Ollama service to listen on an address
+reachable through Docker's host gateway and firewall access to the local
+containers. Nginx limits the chat endpoint to 5 requests per minute per client
+IP with a burst of 2 and rejects request bodies larger than 128 KB. Do not
+expose Ollama's API directly to the public internet. The limit uses Nginx's
+direct peer address; if a trusted proxy is added in front of Nginx, configure
+trusted client-IP handling rather than trusting arbitrary forwarded headers.
 
 ## Project Structure Highlights
 

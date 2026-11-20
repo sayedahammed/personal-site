@@ -11,6 +11,10 @@ services:
       DJANGO_CSRF_TRUSTED_ORIGINS: https://sayedahammed.com,https://www.sayedahammed.com
       DJANGO_DATABASE_PATH: /data/db.sqlite3
       DJANGO_STATIC_ROOT: /app/staticfiles
+      OLLAMA_HOST: ${OLLAMA_HOST:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3:0.6b}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - portfolio_db:/data
       - portfolio_static:/app/staticfiles

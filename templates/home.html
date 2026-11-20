@@ -223,4 +223,42 @@
     <footer class="site-footer section-shell"><a class="wordmark footer-mark" href="#home">MD. SAYED AHAMMED</a><span>© {% now "Y" %} Md. Sayed Ahammed</span><a href="{% url 'download_resume' %}">Download Resume ↓</a></footer>
   </section>
 </main>
+
+<aside class="smalltalk" data-chat-url="{% url 'smalltalk_chat' %}">
+  <section class="smalltalk-panel" id="smalltalk-panel" role="dialog" aria-labelledby="smalltalk-title" aria-hidden="true" hidden>
+    <header class="smalltalk-header">
+      <div>
+        <h2 id="smalltalk-title">SmallTalk</h2>
+        <p>Chat with Sayed’s portfolio assistant</p>
+      </div>
+      <button class="smalltalk-close" type="button" aria-label="Close SmallTalk">×</button>
+    </header>
+    <div class="smalltalk-messages" role="log" aria-live="polite" aria-relevant="additions">
+      <p class="smalltalk-message smalltalk-message-assistant">Hi! I’m SmallTalk. What would you like to know?</p>
+    </div>
+    <form class="smalltalk-form">
+      {% csrf_token %}
+      <label class="sr-only" for="smalltalk-input">Your message</label>
+      <textarea id="smalltalk-input" name="message" rows="1" maxlength="1000" placeholder="Write a message..." required></textarea>
+      <button type="submit" aria-label="Send message">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </svg>
+      </button>
+    </form>
+  </section>
+  <button class="smalltalk-launcher" type="button" aria-expanded="false" aria-controls="smalltalk-panel">
+    <span class="smalltalk-launcher-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M3.7 6.3A2.6 2.6 0 0 1 6.3 3.7h7a2.6 2.6 0 0 1 2.6 2.6v3.5a2.6 2.6 0 0 1-2.6 2.6H9.8l-3.5 2.5v-2.7a2.6 2.6 0 0 1-2.6-2.4z" fill="#fff" stroke="currentColor" stroke-linejoin="round" stroke-width="1.4"/>
+        <path d="M9.7 11.4h7.8a2.5 2.5 0 0 1 2.5 2.5v2.2a2.5 2.5 0 0 1-2.5 2.5h-.8v2l-2.8-2h-4.2a2.5 2.5 0 0 1-2.5-2.5v-.4" fill="#bfdbfe" stroke="currentColor" stroke-linejoin="round" stroke-width="1.4"/>
+        <circle cx="7.5" cy="8.1" r=".65" fill="currentColor"/>
+        <circle cx="9.8" cy="8.1" r=".65" fill="currentColor"/>
+        <circle cx="12.1" cy="8.1" r=".65" fill="currentColor"/>
+        <path d="M11.5 15h4.2" stroke="currentColor" stroke-linecap="round" stroke-width="1.3"/>
+      </svg>
+    </span>
+    <span>SmallTalk</span>
+  </button>
+</aside>
 {% endblock %}
