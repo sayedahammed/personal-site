@@ -22,7 +22,7 @@ class PortfolioViewsTests(TestCase):
         response = self.client.get(reverse("home"))
 
         self.assertContains(response, "Personal Assistant")
-        self.assertContains(response, "Qwen3.5:0.8b")
+        self.assertContains(response, "Qwen3:0.6b")
         self.assertContains(response, "professional background")
         self.assertContains(response, reverse("smalltalk_chat"))
 
@@ -87,7 +87,7 @@ class PortfolioViewsTests(TestCase):
         self.assertIn(json.dumps(profile), sent_messages[0]["content"])
         self.assertEqual(sent_messages[1:], messages)
         client.chat.assert_called_once_with(
-            model="qwen3.5:0.8b",
+            model="qwen3:0.6b",
             messages=sent_messages,
             think=False,
             stream=False,
