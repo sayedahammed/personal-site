@@ -77,6 +77,12 @@ def smalltalk_chat(request):
             {"error": "SmallTalk is temporarily unavailable. Please try again later."},
             status=503,
         )
+    except Exception:
+        logger.exception("Unexpected Ollama client failure while handling a SmallTalk request.")
+        return JsonResponse(
+            {"error": "SmallTalk is temporarily unavailable. Please try again later."},
+            status=503,
+        )
 
     message = response.get("message") if isinstance(response, dict) else getattr(response, "message", None)
     reply = message.get("content") if isinstance(message, dict) else getattr(message, "content", None)

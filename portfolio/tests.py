@@ -144,3 +144,19 @@ class PortfolioViewsTests(TestCase):
             response.json(),
             {"error": "SmallTalk couldn't generate a reply. Please try again."},
         )
+
+    @patch("portfolio.views.ollama.Client")
+    def test_smalltalk_chat_reports_unexpected_ollama_failure(self, client_factory):
+        client_factory.return_value.chat.side_effect = RuntimeError("unexpected client failure")
+
+        response = self.client.post(
+            reverse("smalltalk_chat"),
+            data=json.dumps({"messages": [{"role": "user", "content": "Hello"}]}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(
+            response.json(),
+            {"error": "SmallTalk is temporarily unavailable. Please try again later."},
+        )
