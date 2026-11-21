@@ -1,18 +1,29 @@
+import asyncio
 import json
 from io import StringIO
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 import httpx
+from mcp import Client as MCPClient
 from django.core.cache import cache
 from django.test import TestCase
 from django.urls import reverse
 
+from .mcp_server import mcp as time_weather_mcp
 from .models import ContactMessage
+from .views import _mcp_client
 
 
 class PortfolioViewsTests(TestCase):
     def setUp(self):
         cache.clear()
+        execute_patch = patch(
+            "portfolio.views._execute_mcp_tool",
+            new_callable=AsyncMock,
+            return_value={"temperature_c": 24, "conditions": "Clear sky"},
+        )
+        self.execute_mcp_tool = execute_patch.start()
+        self.addCleanup(execute_patch.stop)
 
     def test_homepage_renders_portfolio_content(self):
         response = self.client.get(reverse("home"))
@@ -28,6 +39,7 @@ class PortfolioViewsTests(TestCase):
         self.assertContains(response, "AI Assistant")
         self.assertContains(response, "qwen3:1.7b")
         self.assertContains(response, "professional background")
+        self.assertContains(response, "weather")
         self.assertContains(response, reverse("smalltalk_chat"))
 
     def test_homepage_displays_configured_ollama_model(self):
@@ -106,6 +118,7 @@ class PortfolioViewsTests(TestCase):
         self.assertIn("medium-length answer of 4-6 sentences", sent_messages[0]["content"])
         self.assertIn("Cover every part of", sent_messages[0]["content"])
         self.assertIn("Never use outside knowledge", sent_messages[0]["content"])
+        self.assertIn("verified data supplied by the MCP tools", sent_messages[0]["content"])
         self.assertIn(json.dumps(profile), sent_messages[0]["content"])
         self.assertEqual(sent_messages[1:], messages)
         client.chat.assert_called_once_with(
@@ -123,6 +136,112 @@ class PortfolioViewsTests(TestCase):
                 "top_k": 20,
             },
         )
+
+    @patch("portfolio.views.ollama.Client")
+    def test_smalltalk_chat_uses_weather_mcp_tool(self, client_factory):
+        client = client_factory.return_value
+        client.chat.return_value = iter([
+            {"message": {"content": "Dhaka is currently clear at 24°C."}},
+        ])
+
+        with patch(
+            "pathlib.Path.open",
+            return_value=StringIO(json.dumps({"name": "Test Profile"})),
+        ):
+            response = self.client.post(
+                reverse("smalltalk_chat"),
+                data=json.dumps({
+                    "messages": [{"role": "user", "content": "Current weather"}],
+                }),
+                content_type="application/json",
+            )
+
+        stream_output = b"".join(response.streaming_content).decode()
+        self.assertIn("Dhaka is currently clear at 24°C.".encode("utf-8").hex(), stream_output)
+        self.execute_mcp_tool.assert_awaited_once_with("get_current_weather", {"city": "Dhaka"})
+        self.assertEqual(len(client.chat.call_args_list), 1)
+        prompt = client.chat.call_args.kwargs["messages"][0]["content"]
+        self.assertIn("VERIFIED_LIVE_MCP_DATA", prompt)
+        self.assertIn('"temperature_c": 24', prompt)
+        self.assertNotIn("tools", client.chat.call_args.kwargs)
+
+    def test_time_weather_mcp_exposes_current_time_and_weather(self):
+        class FakeAsyncClient:
+            def __init__(self, **kwargs):
+                pass
+
+            async def __aenter__(self):
+                return self
+
+            async def __aexit__(self, *args):
+                return None
+
+            async def get(self, url, params):
+                if "geocoding-api" in url:
+                    return httpx.Response(
+                        200,
+                        json={
+                            "results": [{
+                                "name": "Dhaka",
+                                "country": "Bangladesh",
+                                "latitude": 23.8,
+                                "longitude": 90.4,
+                            }],
+                        },
+                        request=httpx.Request("GET", url),
+                    )
+                return httpx.Response(
+                    200,
+                    json={
+                        "timezone": "Asia/Dhaka",
+                        "current": {
+                            "time": "2026-11-21T10:00",
+                            "temperature_2m": 25,
+                            "apparent_temperature": 26,
+                            "relative_humidity_2m": 70,
+                            "precipitation": 0,
+                            "weather_code": 2,
+                            "wind_speed_10m": 5,
+                        },
+                    },
+                    request=httpx.Request("GET", url),
+                )
+
+        async def call_tools():
+            async with MCPClient(time_weather_mcp) as mcp_client:
+                listing = await mcp_client.list_tools()
+                time_result = await mcp_client.call_tool(
+                    "get_current_time",
+                    {"timezone": "Asia/Dhaka"},
+                )
+                with patch("portfolio.mcp_server.httpx.AsyncClient", FakeAsyncClient):
+                    weather_result = await mcp_client.call_tool(
+                        "get_current_weather",
+                        {"city": "Dhaka"},
+                    )
+                return listing, time_result, weather_result
+
+        listing, time_result, weather_result = asyncio.run(call_tools())
+
+        self.assertEqual(
+            {tool.name for tool in listing.tools},
+            {"get_current_time", "get_current_weather"},
+        )
+        self.assertEqual(time_result.structured_content["timezone"], "Asia/Dhaka")
+        self.assertIn("datetime", time_result.structured_content)
+        self.assertEqual(weather_result.structured_content["city"], "Dhaka")
+        self.assertEqual(weather_result.structured_content["conditions"], "Partly cloudy")
+
+    def test_debug_mode_uses_in_process_mcp_server(self):
+        async def list_tool_names():
+            async with _mcp_client() as mcp_client:
+                result = await mcp_client.list_tools()
+                return {tool.name for tool in result.tools}
+
+        with self.settings(DEBUG=True, MCP_SERVER_URL="http://127.0.0.1:1/mcp"):
+            tool_names = asyncio.run(list_tool_names())
+
+        self.assertEqual(tool_names, {"get_current_time", "get_current_weather"})
 
     @patch("portfolio.views.ollama.Client")
     def test_smalltalk_chat_is_unavailable_without_profile(self, client_factory):

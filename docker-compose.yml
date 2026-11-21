@@ -13,6 +13,7 @@ services:
       DJANGO_STATIC_ROOT: /app/staticfiles
       OLLAMA_HOST: ${OLLAMA_HOST:-http://host.docker.internal:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3:1.7b}
+      MCP_SERVER_URL: http://mcp-tools:8001/mcp
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -28,6 +29,29 @@ services:
       timeout: 5s
       retries: 5
       start_period: 45s
+    depends_on:
+      mcp-tools:
+        condition: service_healthy
+
+  mcp-tools:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "-m", "portfolio.mcp_server"]
+    restart: unless-stopped
+    environment:
+      MCP_SERVER_HOST: 0.0.0.0
+      MCP_SERVER_PORT: "8001"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import socket; connection = socket.create_connection(('127.0.0.1', 8001), 2); connection.close()"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
 
   nginx:
     build:

@@ -38,6 +38,11 @@ the profile file is present in the deployment image or securely mounted into the
 Inference uses a 4K-token context and limits each chat message to 1,000 characters.
 Chat requests are limited to 10 per minute per client IP. Factual
 answers target medium detail and can use up to 320 tokens.
+The assistant can use an internal MCP service for current time and weather.
+Time defaults to `Asia/Dhaka`; weather defaults to Dhaka and uses the
+Open-Meteo geocoding and forecast APIs without an API key. Docker Compose starts
+the MCP service privately. In debug-mode local development, Django connects to
+the MCP server in-process, so no additional service needs to be started.
 Each request is independent: only the current user message is sent to Ollama,
 and previous turns are not included in the model context. The browser keeps the
 visible transcript for the current page only. It does not connect to Ollama
