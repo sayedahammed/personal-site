@@ -26,7 +26,7 @@ class PortfolioViewsTests(TestCase):
         response = self.client.get(reverse("home"))
 
         self.assertContains(response, "AI Assistant")
-        self.assertContains(response, "qwen3:8b")
+        self.assertContains(response, "qwen3:1.7b")
         self.assertContains(response, "professional background")
         self.assertContains(response, reverse("smalltalk_chat"))
 

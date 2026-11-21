@@ -27,7 +27,7 @@ This portfolio site is built as a lightweight Django application with a static f
 ## AI assistant
 
 The AI assistant uses the Ollama Python client and defaults to the
-`qwen3:8b` model. Set `OLLAMA_MODEL` in the environment (or in the root
+`qwen3:1.7b` model. Set `OLLAMA_MODEL` in the environment (or in the root
 `.env` file for Docker Compose) to change the model in one place; the assistant
 uses that value for inference and displays it in the chat header. It reads
 `data/profile.json` on the server and uses it as the source for

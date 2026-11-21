@@ -90,7 +90,7 @@ CACHES = {
 }
 
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen3:8b")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen3:1.7b")
 
 SECURE_SSL_REDIRECT = not DEBUG
 SECURE_HSTS_SECONDS = int(os.environ.get("DJANGO_SECURE_HSTS_SECONDS", "31536000")) if not DEBUG else 0
