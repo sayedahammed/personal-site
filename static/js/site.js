@@ -27,7 +27,6 @@ if (smalltalk) {
   const transcript = smalltalk.querySelector(".smalltalk-messages");
   const sendButton = form.querySelector('button[type="submit"]');
   const csrfToken = form.querySelector('[name="csrfmiddlewaretoken"]').value;
-  const messages = [];
 
   const setOpen = (isOpen) => {
     panel.hidden = !isOpen;
@@ -44,6 +43,7 @@ if (smalltalk) {
     message.textContent = content;
     transcript.append(message);
     transcript.scrollTop = transcript.scrollHeight;
+    return message;
   };
 
   launcher.addEventListener("click", () => setOpen(true));
@@ -63,8 +63,6 @@ if (smalltalk) {
     const content = input.value.trim();
     if (!content || sendButton.disabled) return;
 
-    if (messages.length >= 6) messages.splice(0, 2);
-    messages.push({ role: "user", content });
     appendMessage("user", content);
     input.value = "";
     sendButton.disabled = true;
@@ -82,17 +80,78 @@ if (smalltalk) {
           "Content-Type": "application/json",
           "X-CSRFToken": csrfToken,
         },
-        body: JSON.stringify({ messages }),
+        body: JSON.stringify({ messages: [{ role: "user", content }] }),
       });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "The personal assistant couldn't send your message.");
+      const contentType = response.headers.get("Content-Type") || "";
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.error || "The AI assistant couldn't send your message.");
+      }
+      if (!contentType.includes("text/event-stream") || !response.body) {
+        throw new Error("The AI assistant returned an invalid response.");
+      }
 
-      messages.push({ role: "assistant", content: result.reply });
-      appendMessage("assistant", result.reply);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let reply = "";
+      let assistantMessage = null;
+
+      const processEventBlock = (eventBlock) => {
+        let eventName = "message";
+        let eventData = "";
+        for (const line of eventBlock.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n")) {
+          if (line.startsWith("event:")) eventName = line.slice(6).trim();
+          if (line.startsWith("data:")) {
+            eventData += `${eventData ? "\n" : ""}${line.slice(5).trimStart()}`;
+          }
+        }
+        if (!eventData) return;
+
+        if (!/^[0-9a-f]+$/i.test(eventData)) {
+          throw new Error("The AI assistant returned an invalid streaming response.");
+        }
+        const bytes = new Uint8Array(eventData.match(/.{2}/g).map((pair) => parseInt(pair, 16)));
+        const text = new TextDecoder().decode(bytes);
+
+        if (eventName === "error") {
+          throw new Error(text || "The AI assistant couldn't generate a reply.");
+        }
+        if (eventName === "done") return;
+
+        reply += text;
+        if (!assistantMessage) {
+          thinking.remove();
+          assistantMessage = appendMessage("assistant", reply);
+        } else {
+          assistantMessage.textContent = reply;
+          transcript.scrollTop = transcript.scrollHeight;
+        }
+      };
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          buffer += decoder.decode();
+          break;
+        }
+        buffer += decoder.decode(value, { stream: true }).replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+
+        let boundary = buffer.indexOf("\n\n");
+        while (boundary !== -1) {
+          const eventBlock = buffer.slice(0, boundary);
+          buffer = buffer.slice(boundary + 2);
+          processEventBlock(eventBlock);
+          boundary = buffer.indexOf("\n\n");
+        }
+      }
+      if (buffer.trim()) processEventBlock(buffer);
+
+      if (!reply) throw new Error("The AI assistant couldn't generate a reply.");
     } catch (error) {
       appendMessage(
         "assistant",
-        error instanceof Error ? error.message : "The personal assistant is temporarily unavailable.",
+        error instanceof Error ? error.message : "The AI assistant is temporarily unavailable.",
         true,
       );
     } finally {
