@@ -344,6 +344,48 @@ h1, h2, h3, p { margin-top: 0; }
   .smalltalk { left: 12px; bottom: 12px; }
   .smalltalk-panel { width: calc(100vw - 24px); height: min(500px, calc(100vh - 90px)); bottom: 58px; }
 }
+@media (max-width: 620px) {
+  body { overflow-x: hidden; }
+  img, svg { max-width: 100%; }
+  .wordmark { max-width: calc(100% - 52px); font-size: 15px; line-height: 1.2; }
+  .navigation { z-index: 10; box-shadow: 0 16px 28px rgb(23 32 44 / 8%); }
+  .hero h1 { max-width: 100%; }
+  .hero-actions { align-items: stretch; flex-wrap: wrap; }
+  .hero-actions .button { max-width: 100%; }
+  .timeline-title { align-items: flex-start; }
+  .timeline-main { min-width: 0; }
+  .tag-list { row-gap: 5px; }
+  .project-card h3 { padding-right: 58px; }
+  .project-symbol { right: 4px; }
+  .contact-copy, .contact-form-wrap { min-width: 0; }
+  .contact-email { max-width: 100%; overflow-wrap: anywhere; }
+  .social-links { gap: 12px 16px; }
+  .form-field input, .form-field textarea, .button-light { width: 100%; }
+  .site-footer { flex-wrap: wrap; justify-content: center; padding: 14px 0; text-align: center; }
+  .site-footer .footer-mark { flex-basis: 100%; }
+  .smalltalk-launcher { min-height: 44px; padding: 0 14px; }
+  .smalltalk-launcher-icon svg { width: 20px; height: 20px; }
+  .smalltalk-panel { border-radius: 12px; }
+}
+@media (max-width: 380px) {
+  .section-shell, .site-header { width: calc(100% - 32px); }
+  .navigation { left: -16px; right: -16px; }
+  .hero { min-height: 810px; padding-top: 56px; }
+  .hero-designation { font-size: 14px; }
+  .hero h1 { font-size: clamp(49px, 16vw, 62px); }
+  .hero-art { top: 505px; width: calc(100vw - 32px); }
+  .hero-meta { gap: 10px; }
+  .hero-meta > span { max-width: 170px; }
+  .hero-meta > a { text-align: right; }
+  .section-heading h2, .expertise-section .section-heading h2 { font-size: 36px; }
+  .intro-content h2, .education-content h2 { font-size: 34px; }
+  .project-card h3 { max-width: 210px; }
+  .impact-stat strong { font-size: 94px; }
+  .contact-copy h2 { font-size: 52px; }
+  .contact-email { font-size: 13px; }
+  .smalltalk-launcher > span:last-child { display: none; }
+  .smalltalk-launcher { width: 44px; justify-content: center; padding: 0; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
