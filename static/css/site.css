@@ -365,7 +365,60 @@ h1, h2, h3, p { margin-top: 0; }
   .site-footer .footer-mark { flex-basis: 100%; }
   .smalltalk-launcher { min-height: 44px; padding: 0 14px; }
   .smalltalk-launcher-icon svg { width: 20px; height: 20px; }
-  .smalltalk-panel { border-radius: 12px; }
+  .smalltalk {
+    left: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  .smalltalk-launcher {
+    min-height: 44px;
+    padding: 0 14px;
+  }
+  .smalltalk-panel {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(max(56px, env(safe-area-inset-bottom)) + 12px);
+    width: auto;
+    height: min(500px, calc(var(--smalltalk-vh, 100dvh) - 76px));
+    max-height: calc(var(--smalltalk-vh, 100dvh) - 76px);
+    border-radius: 12px;
+  }
+  .smalltalk-header {
+    flex: 0 0 auto;
+    padding: 12px 14px;
+  }
+  .smalltalk-header p {
+    max-width: 230px;
+  }
+  .smalltalk-messages {
+    min-height: 0;
+    padding: 12px;
+  }
+  .smalltalk-message {
+    max-width: 92%;
+  }
+  .smalltalk-form {
+    flex: 0 0 auto;
+    padding: 8px;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+  .smalltalk-form textarea {
+    font-size: 16px;
+  }
+}
+@media (max-width: 620px) and (max-height: 520px) {
+  .smalltalk-panel {
+    bottom: calc(max(52px, env(safe-area-inset-bottom)) + 8px);
+    height: calc(var(--smalltalk-vh, 100dvh) - 68px);
+    max-height: calc(var(--smalltalk-vh, 100dvh) - 68px);
+  }
+  .smalltalk-header {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .smalltalk-header p {
+    display: none;
+  }
 }
 @media (max-width: 380px) {
   .section-shell, .site-header { width: calc(100% - 32px); }

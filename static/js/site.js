@@ -28,10 +28,20 @@ if (smalltalk) {
   const sendButton = form.querySelector('button[type="submit"]');
   const csrfToken = form.querySelector('[name="csrfmiddlewaretoken"]').value;
 
+  const updateViewportSize = () => {
+    const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+    document.documentElement.style.setProperty("--smalltalk-vh", `${viewportHeight}px`);
+  };
+
+  updateViewportSize();
+  window.addEventListener("resize", updateViewportSize);
+  window.visualViewport?.addEventListener("resize", updateViewportSize);
+
   const setOpen = (isOpen) => {
     panel.hidden = !isOpen;
     panel.setAttribute("aria-hidden", String(!isOpen));
     launcher.setAttribute("aria-expanded", String(isOpen));
+    launcher.setAttribute("aria-label", isOpen ? "Close AI assistant chat" : "Open AI assistant chat");
     if (isOpen) input.focus();
     else launcher.focus();
   };
@@ -46,7 +56,10 @@ if (smalltalk) {
     return message;
   };
 
-  launcher.addEventListener("click", () => setOpen(true));
+  launcher.addEventListener("click", () => {
+    const isOpen = launcher.getAttribute("aria-expanded") === "true";
+    setOpen(!isOpen);
+  });
   closeButton.addEventListener("click", () => setOpen(false));
   panel.addEventListener("keydown", (event) => {
     if (event.key === "Escape") setOpen(false);
